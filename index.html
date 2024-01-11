@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>Flickr API Test</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com/3.1.8"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div
+    id="app"
+    class="container mx-auto py-5"
+  >
+    <header class="mb-5">
+      <h1 class="text-center mb-5 text-4xl font-bold">Flickrで写真を探す</h1>
+      <form
+        class="flex mx-auto justify-center"
+        v-on:submit.prevent="fetchImagesFromFlickr"
+      >
+        <input
+          class="border rounded border-gray-400 focus:outline-none py-2 px-3 mr-2"
+          name="search"
+          type="search"
+          placeholder="検索テキストを入力"
+          aria-label="Search"
+        >
+        <button
+          class="border rounded border-gray-400 py-2 px-3 hover:bg-gray-100"
+          type="submit"
+        >
+          検索
+        </button>
+      </form>
+    </header>
+    <main>
+      <p v-if="isInitialized" class="text-center">検索してください。</p>
+      <!-- 取得中の時はローディングアイコンを表示 -->
+      <p
+        v-show="isFetching"
+        class="py-5 flex justify-center"
+      >
+        <svg 
+          class="animate-spin h-20 w-20"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+      </p>
+      <!-- 取得失敗した場合は以下のテキストを表示 -->
+      <p v-show="isFailed" class="text-center text-red-600">
+        データの取得に失敗しました。しばらく時間を置いてから、再度お試しください。
+      </p>
+      <!-- 画像が見つからなかった時は、以下のテキストを表示 -->
+      <p v-show="isNotFound" class="text-center text-red-600">
+        画像が見つかりませんでした。
+      </p>
+      <!-- 画像が取得できた場合はphotos配列の一つ一つの要素をv-forで表示 -->
+      <div
+        v-if="isFound"
+        class="flex flex-wrap justify-center gap-2"
+      >
+        <a
+          v-for="photo in photos"
+          v-bind:key="photo.id"
+          v-bind:data-text="photo.text"
+          v-bind:href="photo.pageURL"
+          class="img-tooltip"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <img
+            v-bind:src="photo.imageURL"
+            v-bind:alt="photo.text"
+            width="150"
+            height="150"
+          >
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

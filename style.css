@@ -1,0 +1,61 @@
+/* ツールチップ */
+.img-tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+/* ツールチップの中身 */
+.img-tooltip:before {
+  position: absolute;
+  top: 100%;
+  margin-top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1070;
+  min-width: 200px;
+  padding: 7px;
+  font-size: .9rem;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(255,255,255,.3);
+
+  /* data-text属性の属性値を、ツールチップとして表示する */
+  content: attr(data-text);
+
+  /* デフォルトでツールチップは非表示 */
+  opacity: 0;
+  visibility: hidden;
+
+  transition: opacity .3s ease-out;
+}
+
+/* ツールチップの矢印 */
+.img-tooltip:after {
+  position: absolute;
+  top: 100%;
+  margin-top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1070;
+
+  /* 矢印の三角形部分 */
+  border-color: transparent transparent #000 transparent;
+  border-style: solid;
+  border-width: 7px;
+  content: "";
+
+  /* デフォルトで非表示 */
+  opacity: 0;
+  visibility: hidden;
+
+  transition: opacity .3s ease-out;
+}
+
+.img-tooltip:hover:before,
+.img-tooltip:hover:after {
+  /* マウスオーバーでツールチップを表示 */
+  opacity: 1;
+  visibility: visible;
+}
